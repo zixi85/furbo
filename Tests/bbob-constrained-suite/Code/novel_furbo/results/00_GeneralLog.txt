@@ -1,0 +1,7 @@
+2445) bbob-constrained_f002_i01_d10:
+	 Started
+	 Completed - time: 11.74 seconds
+	 Completed - time: 26.36 seconds
+	 Completed - time: 35.44 seconds
+	 Completed - time: 47.75 seconds
+	 Completed - time: 56.96 seconds

@@ -1,0 +1,37 @@
+bbob-constrained_f002_i01_d10
+11/21/25 - 22:55:09: Start
+0) No feasible point yet! Smallest total violation: 9.35e+03, MG radius: 1.0
+1) Best value: 1.49e+03, MG radius: 1.0
+2) Best value: 1.57e+03, MG radius: 1.0
+3) Best value: 1.69e+03, MG radius: 1.0
+[DEBUG] Saving run 0: Total history entries = 4 (max allowed = 100), samples = 120
+11/21/25 - 22:55:20: Finish
+Computation time: 11.74 seconds
+0) Best value: 1.32e+03, MG radius: 1.0
+1) Best value: 1.47e+03, MG radius: 1.0
+2) Best value: 1.63e+03, MG radius: 1.0
+3) Best value: 1.68e+03, MG radius: 1.0
+[DEBUG] Saving run 1: Total history entries = 4 (max allowed = 100), samples = 120
+11/21/25 - 22:55:35: Finish
+Computation time: 26.36 seconds
+0) No feasible point yet! Smallest total violation: 1.74e+05, MG radius: 1.0
+1) Best value: 8.70e+02, MG radius: 1.0
+2) Best value: 1.35e+03, MG radius: 1.0
+3) Best value: 1.59e+03, MG radius: 1.0
+[DEBUG] Saving run 2: Total history entries = 4 (max allowed = 100), samples = 120
+11/21/25 - 22:55:44: Finish
+Computation time: 35.44 seconds
+0) Best value: 6.73e+02, MG radius: 1.0
+1) Best value: 1.16e+03, MG radius: 1.0
+2) Best value: 1.51e+03, MG radius: 1.0
+3) Best value: 1.61e+03, MG radius: 1.0
+[DEBUG] Saving run 3: Total history entries = 4 (max allowed = 100), samples = 120
+11/21/25 - 22:55:56: Finish
+Computation time: 47.75 seconds
+0) Best value: 6.99e+01, MG radius: 1.0
+1) Best value: 1.20e+03, MG radius: 1.0
+2) Best value: 1.38e+03, MG radius: 1.0
+3) Best value: 1.56e+03, MG radius: 1.0
+[DEBUG] Saving run 4: Total history entries = 4 (max allowed = 100), samples = 120
+11/21/25 - 22:56:06: Finish
+Computation time: 56.96 seconds
