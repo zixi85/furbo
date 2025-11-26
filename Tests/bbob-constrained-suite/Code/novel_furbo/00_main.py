@@ -13,6 +13,8 @@ import pickle as pkl
 import random
 import warnings
 import time
+from baseline_runner import run_baseline_all
+
 
 from dataclasses import dataclass
 
@@ -63,6 +65,15 @@ os.makedirs(cwd_base, exist_ok=True)
 
 # General log file
 f_gen = open(os.path.join(cwd_base, '00_GeneralLog.txt'), 'w')
+
+# Option: run the BoTorch qLogEI baseline (batch size q=1).
+# Set `run_baseline_flag = True` to execute the baseline runner before FuRBO experiments.
+run_baseline_flag = False
+if run_baseline_flag:
+    print("Running BoTorch qLogEI baseline (this may take a while)...")
+    run_baseline_all()
+    print("Baseline run finished. Exiting main script.")
+    raise SystemExit(0)
 
 functions_to_run = ['f002']
 instances_to_run = ['i01']

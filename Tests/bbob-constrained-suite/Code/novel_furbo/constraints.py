@@ -104,3 +104,26 @@ class mopta_cons():
         y = torch.tensor(np.load("mopta_out.npy"), **tkwargs)
         
         return y[self.i]
+
+
+def evaluate_constraints(x, coco_fun, coco_instance, dim=None):
+    """Evaluate COCO constraints for given function/instance.
+
+    Returns a 1D numpy array of constraint values.
+    """
+    import cocoex
+    import numpy as _np
+
+    inst_id = f"i{coco_instance+1:02d}"
+    fun_id = f"f{coco_fun:03d}"
+
+    suite = cocoex.Suite("bbob-constrained", "", "")
+    for p in suite:
+        parts = p.id.split('_')
+        if len(parts) >= 4 and parts[1] == fun_id and parts[2] == inst_id:
+            if dim is None or parts[3] == f"d{int(dim):02d}":
+                arr = _np.asarray(x, dtype=_np.float64)
+                c = p.constraint(arr)
+                return _np.asarray(c, dtype=_np.float64)
+
+    raise ValueError(f"COCO problem f{coco_fun} i{coco_instance+1} not found in suite")

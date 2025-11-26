@@ -78,3 +78,30 @@ if __name__ == '__main__':
     x = torch.tensor([1., 2., 3., 4., 5., 6.])
     
     y = fcn.eval_(x)
+
+
+def evaluate_objective(x, coco_fun, coco_instance, dim=None):
+    """Evaluate the COCO objective for given function/instance.
+
+    x: 1D numpy array or list (in the problem input space)
+    coco_fun: integer function id (e.g., 2 -> f002)
+    coco_instance: integer instance index (0-based; mapped to i01..)
+    dim: optional dimension (int). If provided, will match p.dimension.
+    Returns a scalar float.
+    """
+    import cocoex
+    import numpy as _np
+
+    # Normalize instance numbering: incoming code uses 0-based instances
+    inst_id = f"i{coco_instance+1:02d}"
+    fun_id = f"f{coco_fun:03d}"
+
+    suite = cocoex.Suite("bbob-constrained", "", "")
+    for p in suite:
+        parts = p.id.split('_')
+        if len(parts) >= 4 and parts[1] == fun_id and parts[2] == inst_id:
+            if dim is None or parts[3] == f"d{int(dim):02d}":
+                arr = _np.asarray(x, dtype=_np.float64)
+                return float(p(arr))
+
+    raise ValueError(f"COCO problem f{coco_fun} i{coco_instance+1} not found in suite")

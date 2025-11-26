@@ -199,4 +199,4 @@ def objective_2d(state, no_save=False, cbar_trigger=True, **tkwargs):
     
     fig.savefig('It_'+str(state.it_counter - 1) + '_Obj' + '.png', format='png')
     return fig, ax
-    
+
