@@ -33,6 +33,14 @@ def load_runs(problem_dir):
             if os.path.exists(os.path.join(problem_dir, base)):
                 cons = np.load(os.path.join(problem_dir, base), allow_pickle=True)
 
+        # normalize saved None -> actual None (np.save(None) becomes array(None, dtype=object))
+        if isinstance(cons, np.ndarray):
+            try:
+                if cons.shape == () and cons.item() is None:
+                    cons = None
+            except Exception:
+                pass
+
         runs.append((obj, cons, objf))
 
     return runs
