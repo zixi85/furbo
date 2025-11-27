@@ -11,6 +11,7 @@ import os
 import numpy as np
 from baseline_botorch_qlogei import run_botorch_qlogei
 from baseline_plot import plot_problem
+from baseline_postprocess import aggregate_problem
 
 
 def parse_list(s):
@@ -97,8 +98,23 @@ def main():
                     np.save(os.path.join(problem_dir, f"cons_rep{rep}.npy"), y_con_np)
                     np.save(os.path.join(problem_dir, f"X_rep{rep}.npy"), X_np)
 
+                    # Also save a torch-style history for downstream postprocessing
+                    try:
+                        import torch
+                        c_for_torch = y_con_np if y_con_np is not None else np.zeros_like(y_obj_np)
+                        event = {'batch': {'Y': torch.as_tensor(y_obj_np), 'C': torch.as_tensor(c_for_torch)}}
+                        torch_fname = f"baseline_f{f}_i{inst}_d{d}_it_{rep}.torch"
+                        torch.save([event], os.path.join(problem_dir, torch_fname))
+                    except Exception:
+                        pass
+
                 # plot after all reps
                 try:
+                    # ensure aggregated files exist
+                    try:
+                        aggregate_problem(problem_dir, n_iteration=budget)
+                    except Exception:
+                        pass
                     plot_problem(problem_dir, out_dir=problem_dir, show=True)
                 except Exception as e:
                     print("Plotting failed:", e)

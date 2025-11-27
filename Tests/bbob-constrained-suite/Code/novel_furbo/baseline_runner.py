@@ -2,6 +2,7 @@ from baseline_botorch_qlogei import run_botorch_qlogei
 import numpy as np
 import os
 from baseline_plot import plot_problem
+from baseline_postprocess import aggregate_problem
 
 
 def run_baseline_all(
@@ -48,13 +49,38 @@ def run_baseline_all(
                         coco_instance=inst,
                         seed=seed + rep,
                     )
+                    # Save per-repetition in both numpy and torch formats to support
+                    # downstream postprocessing consistent with other experiments.
+                    try:
+                        y_obj_np = y_obj.detach().cpu().numpy()
+                    except Exception:
+                        y_obj_np = np.asarray(y_obj)
+                    try:
+                        y_con_np = y_con.detach().cpu().numpy()
+                    except Exception:
+                        y_con_np = np.asarray(y_con)
 
-                    np.save(os.path.join(problem_dir, f"obj_rep{rep}.npy"), y_obj.detach().cpu().numpy())
-                    np.save(os.path.join(problem_dir, f"cons_rep{rep}.npy"), y_con.detach().cpu().numpy())
+                    np.save(os.path.join(problem_dir, f"obj_rep{rep}.npy"), y_obj_np)
+                    np.save(os.path.join(problem_dir, f"cons_rep{rep}.npy"), y_con_np)
                     np.save(os.path.join(problem_dir, f"X_rep{rep}.npy"), X)
 
-                # Plot after finishing all reps
-                print("  Plotting", problem_dir)
+                    # Save a torch-style history object: a list with one event matching
+                    # the format used elsewhere in the repo (list of events with 'batch').
+                    try:
+                        import torch
+                        event = {'batch': {'Y': torch.as_tensor(y_obj_np), 'C': torch.as_tensor(y_con_np)}}
+                        torch_fname = f"baseline_f{f}_i{inst}_d{d}_it_{rep}.torch"
+                        torch.save([event], os.path.join(problem_dir, torch_fname))
+                    except Exception:
+                        pass
+
+                # Post-process + plot after finishing all reps
+                print("  Postprocessing and plotting", problem_dir)
+                try:
+                    aggregate_problem(problem_dir, n_iteration=budget)
+                except Exception as e:
+                    print("  Aggregation failed:", e)
+
                 try:
                     plot_problem(problem_dir, out_dir=problem_dir, show=False)
                 except Exception as e:
