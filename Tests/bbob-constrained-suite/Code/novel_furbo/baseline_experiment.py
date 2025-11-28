@@ -50,7 +50,7 @@ def main():
     for f in funcs:
         for inst in insts:
             for d in dims:
-                budget = 10 * d
+                budget = 30 * d
                 problem_dir = os.path.join(args.outdir, f"f{f}_i{inst}_d{d}")
                 os.makedirs(problem_dir, exist_ok=True)
 
